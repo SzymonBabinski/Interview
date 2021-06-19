@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "lectures_schedules")
+@Table(name = "lectures_schedule")
 public class LecturesSchedule {
 
     @Id
@@ -14,6 +14,9 @@ public class LecturesSchedule {
 
     private LocalDateTime start;
     private LocalDateTime end;
+
+    @OneToMany(mappedBy = "schedules", fetch = FetchType.EAGER)
+    private Set<Lecture> lectures;
 
     public LecturesSchedule() {
     }
