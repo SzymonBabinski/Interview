@@ -1,5 +1,7 @@
 package com.interview.sii.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class Lecture {
 
     private int maxMembers;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "lecture_schedules_id", nullable = false)
     private LecturesSchedule schedules;
@@ -35,4 +38,5 @@ public class Lecture {
     public LecturesSchedule getSchedules() {
         return schedules;
     }
+
 }

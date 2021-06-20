@@ -1,5 +1,7 @@
 package com.interview.sii.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -15,6 +17,7 @@ public class LecturesSchedule {
     private LocalDateTime start;
     private LocalDateTime end;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "schedules", fetch = FetchType.EAGER)
     private Set<Lecture> lectures;
 
@@ -33,4 +36,7 @@ public class LecturesSchedule {
         return end;
     }
 
+    public Set<Lecture> getLectures() {
+        return lectures;
+    }
 }
