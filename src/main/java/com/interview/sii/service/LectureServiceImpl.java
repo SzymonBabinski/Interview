@@ -10,6 +10,10 @@ import com.interview.sii.repository.LectureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
@@ -41,6 +45,21 @@ public class LectureServiceImpl implements LectureService {
 
         User user = new User(loginForm.getLogin(), loginForm.getEmail(), Set.of(lecture));
         userService.saveUser(user);
+
+        LocalDateTime sendEmailTime = LocalDateTime.now();
+
+        try (FileWriter fileWriter = new FileWriter("powiadomienia.txt")) {
+            PrintWriter writer = new PrintWriter(fileWriter);
+            writer.print("Data wysłania: " + sendEmailTime
+                    + " Odbiorca: " + loginForm.getEmail()
+                    + " Treść: Drogi użytkowniku: " + loginForm.getLogin()
+                    + " dziękujemy za dokonanie rezerwacji na prelekcje " + lecture.getTitle()
+                    + ", życzymy udanej zabawy!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

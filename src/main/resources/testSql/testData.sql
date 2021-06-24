@@ -28,4 +28,6 @@ INSERT INTO USERS_LECTURES(USER_ID,LECTURE_ID) VALUES (1,1),
 (1,4),
 (2,1),
 (3,1),
-(3,3);
+(3,3),
+(4,1),
+(5,1);

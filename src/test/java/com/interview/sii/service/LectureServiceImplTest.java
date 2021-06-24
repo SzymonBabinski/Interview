@@ -2,11 +2,14 @@ package com.interview.sii.service;
 
 import com.interview.sii.exceptions.LectureNotFoundException;
 import com.interview.sii.exceptions.MaximumParticipantsException;
+import com.interview.sii.exceptions.UserAlreadyExistsException;
 import com.interview.sii.model.LoginForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,6 +33,20 @@ class LectureServiceImplTest {
     void shouldThrowUserAlreadyExistsException() {
         LoginForm existingUser = new LoginForm("user1", "user1@gmail.pl");
         assertThrows(MaximumParticipantsException.class, () -> lectureService.makeReservation(1, existingUser));
+    }
+
+    @Test
+    void emailSendTest()
+            throws IOException, UserAlreadyExistsException
+            , MaximumParticipantsException, LectureNotFoundException {
+
+        LoginForm loginForm = new LoginForm("newUser", "newUser@email.com");
+        lectureService.makeReservation(2, loginForm);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("powiadomienia.txt"));
+
+        String email = bufferedReader.readLine();
+
+        assertNotNull(email);
     }
 
 
