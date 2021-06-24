@@ -13,3 +13,19 @@ VALUES (1, 5, 'Programowanie w C++', 1),
        (7, 5, 'Wstep do JavaScript', 3),
        (8, 5, 'Wstep do PHP', 3),
        (9, 5, 'Wstep do Kotlin', 3);
+
+INSERT INTO USER(ID,EMAIL,LOGIN)
+VALUES (1,'user1@gmail.pl','user1'),
+(2,'user2@gmail.pl','user2'),
+(3,'user3@gmail.pl','user3'),
+(4,'user4@gmail.pl','user4'),
+(5,'user5@gmail.pl','user5'),
+(6,'user6@gmail.pl','user6'),
+(7,'user7@gmail.pl','user7'),
+(8,'user8@gmail.pl','user8');
+
+INSERT INTO USERS_LECTURES(USER_ID,LECTURE_ID) VALUES (1,1),
+(1,4),
+(2,1),
+(3,1),
+(3,3);

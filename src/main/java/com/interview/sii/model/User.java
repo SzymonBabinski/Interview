@@ -1,10 +1,13 @@
 package com.interview.sii.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"lectures"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,7 +21,7 @@ public class User {
             CascadeType.MERGE,
             CascadeType.REFRESH,
             CascadeType.PERSIST
-    })
+    }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_lectures",
             joinColumns = {@JoinColumn(name = "user_id")},
