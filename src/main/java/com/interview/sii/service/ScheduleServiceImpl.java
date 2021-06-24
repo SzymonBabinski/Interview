@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    LectureScheduleRepository scheduleRepository;
+    private final LectureScheduleRepository scheduleRepository;
 
     public ScheduleServiceImpl(LectureScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
