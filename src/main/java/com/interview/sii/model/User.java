@@ -10,7 +10,7 @@ import java.util.Set;
 @JsonIgnoreProperties({"lectures"})
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String login;
@@ -21,7 +21,7 @@ public class User {
             CascadeType.MERGE,
             CascadeType.REFRESH,
             CascadeType.PERSIST
-    }, fetch = FetchType.EAGER)
+    })
     @JoinTable(
             name = "users_lectures",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -30,6 +30,12 @@ public class User {
     private Set<Lecture> lectures;
 
     public User() {
+    }
+
+    public User(String login, String email, Set<Lecture> lectures) {
+        this.login = login;
+        this.email = email;
+        this.lectures = lectures;
     }
 
     public int getId() {
