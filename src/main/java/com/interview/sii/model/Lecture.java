@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "lecture")
-@JsonIgnoreProperties({"employees", "maxMembers"})
+@JsonIgnoreProperties({"users", "maxMembers", "users"})
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +24,7 @@ public class Lecture {
     private LecturesSchedule schedules;
 
     @ManyToMany(mappedBy = "lectures")
-    private Set<User> employees;
+    private Set<User> users;
 
     public Lecture() {
     }
@@ -45,7 +45,7 @@ public class Lecture {
         return schedules;
     }
 
-    public Set<User> getEmployees() {
-        return employees;
+    public Set<User> getUsers() {
+        return users;
     }
 }

@@ -1,8 +1,6 @@
 package com.interview.sii.service;
 
-import com.interview.sii.model.Lecture;
 import com.interview.sii.model.LecturesSchedule;
-import com.interview.sii.repository.LectureScheduleRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,12 +16,12 @@ import java.util.List;
 class ScheduleServiceImplTest {
 
     @Autowired
-    private LectureScheduleRepository scheduleRepository;
+    private ScheduleService scheduleService;
     private List<LecturesSchedule> scheduleList;
 
     @BeforeEach
     void init() {
-        scheduleList = scheduleRepository.findAll();
+        scheduleList = scheduleService.findAll();
     }
 
     @Test
