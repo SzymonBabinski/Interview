@@ -2,12 +2,14 @@ package com.interview.sii.controller;
 
 import com.interview.sii.exceptions.UserNotFoundException;
 import com.interview.sii.model.Lecture;
+import com.interview.sii.model.User;
 import com.interview.sii.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -27,6 +29,11 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/users/")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
 }
