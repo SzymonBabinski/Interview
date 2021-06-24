@@ -52,13 +52,13 @@ class UserServiceImplTest {
                 new User(5, "user5", "user5@gmail.pl"),
                 new User(6, "user6", "user6@gmail.pl"),
                 new User(7, "user7", "user7@gmail.pl"),
-                new User(8, "user8", "user8@gmail.pl")
+                new User(8, "user8", "user8@gmail.pl"),
+                new User(9, "newUser", "newUser@email.com")
         );
 
         List<User> allUsers = userService.getAllUsers();
 
         assertArrayEquals(expectedUsers.toArray(), allUsers.toArray());
-        assertEquals(8, allUsers.size());
     }
 
 }

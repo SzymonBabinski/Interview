@@ -6,6 +6,7 @@ import com.interview.sii.model.Lecture;
 import com.interview.sii.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface UserService {
@@ -14,4 +15,6 @@ public interface UserService {
     User saveUser(User user) throws UserAlreadyExistsException;
 
     List<User> getAllUsers();
+
+    Optional<User> getUserByLoginAndEmail(String login, String email);
 }

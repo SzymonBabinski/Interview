@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Integer> {
     Optional<Lecture> findById(Integer lectureId);
-
 }

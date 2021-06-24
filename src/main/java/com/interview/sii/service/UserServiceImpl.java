@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<Lecture> getUserLectures(String login) throws UserNotFoundException {
-        Optional<User> user = userRepository.getByLogin(login);
+        Optional<User> user = userRepository.getUserByLogin(login);
 
         if (user.isPresent()) {
             return user.get().getLectures();
@@ -35,16 +35,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
-        if (userRepository.getUserByLogin(user.getLogin()).isPresent()) {
+        var existingUser = userRepository.getUserByLogin(user.getLogin());
+        if (existingUser.isPresent() && !existingUser.get().getEmail().equals(user.getEmail())) {
             throw new UserAlreadyExistsException("Podany login " + user.getLogin() + " jest juz zajety! ");
-        } else {
-            userRepository.save(user);
-            return user;
         }
+        userRepository.save(user);
+        return user;
+
     }
 
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> getUserByLoginAndEmail(String login, String email) {
+        return userRepository.getUserByLoginAndEmail(login, email);
+
     }
 }

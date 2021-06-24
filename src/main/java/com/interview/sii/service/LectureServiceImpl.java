@@ -3,6 +3,7 @@ package com.interview.sii.service;
 import com.interview.sii.exceptions.LectureNotFoundException;
 import com.interview.sii.exceptions.MaximumParticipantsException;
 import com.interview.sii.exceptions.UserAlreadyExistsException;
+import com.interview.sii.exceptions.UserNotFoundException;
 import com.interview.sii.model.Lecture;
 import com.interview.sii.model.LoginForm;
 import com.interview.sii.model.User;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.Set;
+
 
 @Service
 @Transactional
@@ -30,7 +32,7 @@ public class LectureServiceImpl implements LectureService {
 
 
     public void makeReservation(Integer lectureId, LoginForm loginForm)
-            throws LectureNotFoundException, MaximumParticipantsException, UserAlreadyExistsException {
+            throws LectureNotFoundException, MaximumParticipantsException, UserAlreadyExistsException, UserNotFoundException {
 
         Lecture lecture;
         if (lectureRepository.findById(lectureId).isPresent()) {
@@ -43,13 +45,21 @@ public class LectureServiceImpl implements LectureService {
             throw new MaximumParticipantsException("Maximum participants for lecture " + lectureId + " reached!");
         }
 
-        User user = new User(loginForm.getLogin(), loginForm.getEmail(), Set.of(lecture));
+
+        User user;
+        if (userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).isPresent()) {
+            user = userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).get();
+            user.getLectures().add(lecture);
+        } else {
+            user = new User(loginForm.getLogin(), loginForm.getEmail(), Set.of(lecture));
+        }
         userService.saveUser(user);
 
         LocalDateTime sendEmailTime = LocalDateTime.now();
 
-        try (FileWriter fileWriter = new FileWriter("powiadomienia.txt")) {
-            PrintWriter writer = new PrintWriter(fileWriter);
+        try (FileWriter fileWriter = new FileWriter("powiadomienia.txt");
+             PrintWriter writer = new PrintWriter(fileWriter)) {
+
             writer.print("Data wysłania: " + sendEmailTime
                     + " Odbiorca: " + loginForm.getEmail()
                     + " Treść: Drogi użytkowniku: " + loginForm.getLogin()
@@ -59,8 +69,8 @@ public class LectureServiceImpl implements LectureService {
             e.printStackTrace();
         }
 
-
     }
+
 
 
 }
