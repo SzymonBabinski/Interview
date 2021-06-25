@@ -1,9 +1,6 @@
 package com.interview.sii.service;
 
-import com.interview.sii.exceptions.LectureNotFoundException;
-import com.interview.sii.exceptions.MaximumParticipantsException;
-import com.interview.sii.exceptions.UserAlreadyExistsException;
-import com.interview.sii.exceptions.UserNotFoundException;
+import com.interview.sii.exceptions.*;
 import com.interview.sii.model.LoginForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +34,15 @@ class LectureServiceImplTest {
     }
 
     @Test
+    void shouldThrowMaximumLecturesOnPath() {
+        LoginForm existingUser = new LoginForm("user7", "user7@gmail.pl");
+        assertThrows(MaximumLecturesOnPath.class, () -> lectureService.makeReservation(8, existingUser));
+    }
+
+    @Test
     void emailSendTest()
             throws IOException, UserAlreadyExistsException
-            , MaximumParticipantsException, LectureNotFoundException, UserNotFoundException {
+            , MaximumParticipantsException, LectureNotFoundException, MaximumLecturesOnPath {
 
         LoginForm loginForm = new LoginForm("newUser", "newUser@email.com");
         lectureService.makeReservation(2, loginForm);

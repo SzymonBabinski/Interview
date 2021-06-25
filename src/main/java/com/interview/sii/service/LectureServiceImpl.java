@@ -1,9 +1,9 @@
 package com.interview.sii.service;
 
 import com.interview.sii.exceptions.LectureNotFoundException;
+import com.interview.sii.exceptions.MaximumLecturesOnPath;
 import com.interview.sii.exceptions.MaximumParticipantsException;
 import com.interview.sii.exceptions.UserAlreadyExistsException;
-import com.interview.sii.exceptions.UserNotFoundException;
 import com.interview.sii.model.Lecture;
 import com.interview.sii.model.LoginForm;
 import com.interview.sii.model.User;
@@ -32,7 +32,7 @@ public class LectureServiceImpl implements LectureService {
 
 
     public void makeReservation(Integer lectureId, LoginForm loginForm)
-            throws LectureNotFoundException, MaximumParticipantsException, UserAlreadyExistsException, UserNotFoundException {
+            throws LectureNotFoundException, MaximumParticipantsException, UserAlreadyExistsException, MaximumLecturesOnPath {
 
         Lecture lecture;
         if (lectureRepository.findById(lectureId).isPresent()) {
@@ -48,6 +48,11 @@ public class LectureServiceImpl implements LectureService {
 
         User user;
         if (userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).isPresent()) {
+
+            if (lectureRepository.getUserLecturesCountOnPath(loginForm.getLogin(), lecture.getSchedules().getId()) > 0) {
+                throw new MaximumLecturesOnPath("You already have already registerer lecture on this path!");
+            }
+
             user = userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).get();
             user.getLectures().add(lecture);
         } else {
@@ -70,7 +75,6 @@ public class LectureServiceImpl implements LectureService {
         }
 
     }
-
 
 
 }
