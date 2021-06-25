@@ -28,7 +28,6 @@ public class LectureServiceImpl implements LectureService {
         this.userService = userService;
     }
 
-
     public void makeReservation(Integer lectureId, LoginForm loginForm)
             throws LectureNotFoundException, MaximumParticipantsException, UserAlreadyExistsException, MaximumLecturesOnPath {
 
@@ -43,7 +42,6 @@ public class LectureServiceImpl implements LectureService {
             throw new MaximumParticipantsException("Maximum participants for lecture " + lectureId + " reached!");
         }
 
-
         User user;
         if (userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).isPresent()) {
 
@@ -56,6 +54,7 @@ public class LectureServiceImpl implements LectureService {
         } else {
             user = new User(loginForm.getLogin(), loginForm.getEmail(), Set.of(lecture));
         }
+
         userService.saveUser(user);
 
         LocalDateTime sendEmailTime = LocalDateTime.now();
@@ -64,7 +63,6 @@ public class LectureServiceImpl implements LectureService {
 
         try (FileWriter fileWriter = new FileWriter(file, true);
              PrintWriter writer = new PrintWriter(fileWriter)) {
-
             writer.println("Data wyslania: " + sendEmailTime
                     + " Odbiorca: " + loginForm.getEmail()
                     + " Tresc: Drogi użytkowniku: " + loginForm.getLogin()
@@ -73,7 +71,6 @@ public class LectureServiceImpl implements LectureService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void deleteReservation(Integer lectureId, LoginForm loginForm) throws UserNotFoundException {

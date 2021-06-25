@@ -18,7 +18,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules")
-    public ResponseEntity<List<LecturesSchedule>> getAllBooks() {
+    public ResponseEntity<List<LecturesSchedule>> getAllSchedules() {
         return ResponseEntity.ok().body(scheduleService.findAll());
     }
 
