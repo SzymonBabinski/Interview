@@ -48,7 +48,7 @@ public class LectureServiceImpl implements LectureService {
         if (userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).isPresent()) {
 
             if (lectureRepository.getUserLecturesCountOnPath(loginForm.getLogin(), lecture.getSchedules().getId()) > 0) {
-                throw new MaximumLecturesOnPath("You already have already registerer lecture on this path!");
+                throw new MaximumLecturesOnPath("You already have registered lecture on this path!");
             }
 
             user = userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).get();
@@ -65,11 +65,11 @@ public class LectureServiceImpl implements LectureService {
         try (FileWriter fileWriter = new FileWriter(file, true);
              PrintWriter writer = new PrintWriter(fileWriter)) {
 
-            writer.println("Data wysłania: " + sendEmailTime
+            writer.println("Data wyslania: " + sendEmailTime
                     + " Odbiorca: " + loginForm.getEmail()
-                    + " Treść: Drogi użytkowniku: " + loginForm.getLogin()
-                    + " dziękujemy za dokonanie rezerwacji na prelekcje " + lecture.getTitle()
-                    + ", życzymy udanej zabawy!");
+                    + " Tresc: Drogi użytkowniku: " + loginForm.getLogin()
+                    + " dziekujemy za dokonanie rezerwacji na prelekcje " + lecture.getTitle()
+                    + ", zyczymy udanej zabawy!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +78,8 @@ public class LectureServiceImpl implements LectureService {
 
     public void deleteReservation(Integer lectureId, LoginForm loginForm) throws UserNotFoundException {
         if (userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).isEmpty()) {
-            throw new UserNotFoundException("User with login " + loginForm.getLogin() + "and email: " + loginForm.getEmail() + " not found!");
+            throw new UserNotFoundException("User with login "
+                    + loginForm.getLogin() + " and email: " + loginForm.getEmail() + " not found!");
         }
 
         var user = userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).get();
