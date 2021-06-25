@@ -53,7 +53,7 @@ class UserServiceImplTest {
                 new User(6, "user6", "user6@gmail.pl"),
                 new User(7, "user7", "user7@gmail.pl"),
                 new User(8, "user8", "user8@gmail.pl"),
-                new User(9, "newUser", "newUser@email.com")
+                new User(9, "newTestUser", "newTestUser@email.com")
         );
 
         List<User> allUsers = userService.getAllUsers();

@@ -1,9 +1,6 @@
 package com.interview.sii.service;
 
-import com.interview.sii.exceptions.LectureNotFoundException;
-import com.interview.sii.exceptions.MaximumLecturesOnPath;
-import com.interview.sii.exceptions.MaximumParticipantsException;
-import com.interview.sii.exceptions.UserAlreadyExistsException;
+import com.interview.sii.exceptions.*;
 import com.interview.sii.model.Lecture;
 import com.interview.sii.model.LoginForm;
 import com.interview.sii.model.User;
@@ -11,6 +8,7 @@ import com.interview.sii.repository.LectureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,10 +60,12 @@ public class LectureServiceImpl implements LectureService {
 
         LocalDateTime sendEmailTime = LocalDateTime.now();
 
-        try (FileWriter fileWriter = new FileWriter("powiadomienia.txt");
+        File file = new File("powiadomienia.txt");
+
+        try (FileWriter fileWriter = new FileWriter(file, true);
              PrintWriter writer = new PrintWriter(fileWriter)) {
 
-            writer.print("Data wysłania: " + sendEmailTime
+            writer.println("Data wysłania: " + sendEmailTime
                     + " Odbiorca: " + loginForm.getEmail()
                     + " Treść: Drogi użytkowniku: " + loginForm.getLogin()
                     + " dziękujemy za dokonanie rezerwacji na prelekcje " + lecture.getTitle()
@@ -74,6 +74,15 @@ public class LectureServiceImpl implements LectureService {
             e.printStackTrace();
         }
 
+    }
+
+    public void deleteReservation(Integer lectureId, LoginForm loginForm) throws UserNotFoundException {
+        if (userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).isEmpty()) {
+            throw new UserNotFoundException("User with login " + loginForm.getLogin() + "and email: " + loginForm.getEmail() + " not found!");
+        }
+
+        var user = userService.getUserByLoginAndEmail(loginForm.getLogin(), loginForm.getEmail()).get();
+        lectureRepository.deleteReservation(lectureId, user.getId());
     }
 
 

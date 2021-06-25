@@ -1,9 +1,6 @@
 package com.interview.sii.controller;
 
-import com.interview.sii.exceptions.LectureNotFoundException;
-import com.interview.sii.exceptions.MaximumLecturesOnPath;
-import com.interview.sii.exceptions.MaximumParticipantsException;
-import com.interview.sii.exceptions.UserAlreadyExistsException;
+import com.interview.sii.exceptions.*;
 import com.interview.sii.model.LoginForm;
 import com.interview.sii.service.LectureService;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +28,16 @@ public class LectureController {
         }
     }
 
+    @DeleteMapping("/lectures/{lectureId}/reservations")
+    public ResponseEntity<String> deleteReservation(@PathVariable Integer lectureId, @RequestBody LoginForm loginForm) {
+        try {
+            lectureService.deleteReservation(lectureId, loginForm);
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,12 @@ public class Lecture {
     public Lecture() {
     }
 
+    public Lecture(int id, String title, int maxMembers) {
+        this.id = id;
+        this.title = title;
+        this.maxMembers = maxMembers;
+    }
+
     public int getId() {
         return id;
     }
@@ -47,5 +54,20 @@ public class Lecture {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lecture lecture = (Lecture) o;
+        return id == lecture.id &&
+                maxMembers == lecture.maxMembers &&
+                Objects.equals(title, lecture.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, maxMembers);
     }
 }
